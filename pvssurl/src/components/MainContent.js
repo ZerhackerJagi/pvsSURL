@@ -52,7 +52,7 @@ const MainContent = (props) => {
   }, [myURL]);
 
   const createShortUrl = async () => {
-    var base = `${props.domain}/api/create?url=${myURL}`;
+    var base = `/api/create?url=${myURL}`;
     if(showCustomURL){
       base= base + `&custom=${CustomURL}`;
     }

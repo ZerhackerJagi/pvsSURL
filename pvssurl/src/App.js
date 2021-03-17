@@ -38,6 +38,7 @@ const App = () => {
                 showSidebar={showSidebar}
                 showStatistics={showStatistics}
                 setShowStatistics={setShowStatistics}
+                setStatistics={setStatistics}
                 statistics={statistics}
                 domain={domain}
               />

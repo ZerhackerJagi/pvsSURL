@@ -24,45 +24,6 @@ def connect_db():
     return db_connection
 
 
-def create_db_schema():
-    """creates the database schema"""
-    db_connection = mysql.connector.connect(
-        host = DB_HOST,
-        user = 'root',
-        password= DB_PASSWORD    
-        )
-    cursor = db_connection.cursor()
-    # create database
-    try:
-        query = """CREATE DATABASE IF NOT EXISTS {}""".format(DB_NAME)
-        cursor.execute(query)
-    except mysql.connector.Error as e:
-        app.logger.warning("Creating Database failed..")
-
-    # use pvsSURL
-    try:
-        query = """USE {}""".format(DB_NAME)
-        cursor.execute(query)
-    except mysql.connector.Error as e:
-        app.logger.warning("Using Database failed..")
-
-    # create tables
-    for table_name in TABLES:
-        table_description = TABLES[table_name]
-        try:
-            app.logger.info("Creating table {}: ".format(table_name), end='')
-            cursor.execute(table_description)
-        except mysql.connector.Error as err:
-            if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
-                pass
-            else:
-                app.logger.warning(err.msg)
-        else:
-            app.logger.info("OK")
-    cursor.close()
-    db_connection.close()
-
-
 def create_url(reference_url:str, is_private:bool, custom_tag:str, available_refs:int, shorten_method:int) -> str:
     """creates a shortened url"""
     connection = connect_db()

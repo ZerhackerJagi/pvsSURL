@@ -3,7 +3,10 @@ from flask_cors import CORS
 import json
 import datetime as dt
 import mods.api as api
+import createDB
 from settings import DEFAULT_RANDOMIZER
+import time
+
 
 app = Flask(__name__)
 CORS(app)
@@ -13,9 +16,6 @@ def get_home():
     """
     Homepage
     """
-    # api.create_db_schema()
-    # api.create_url("https://google.de", 0, "goo", -1, 0)
-    # api.create_url("https://google.de", 0, "keks", 2, 2)
     return render_template('index.html')
 
 @app.route('/outdated')
@@ -104,4 +104,7 @@ def get_statistic():
     return make_response(jsonify(res), 200)
 
 if __name__ == '__main__':
+    time.sleep(10)
+    createDB.create_db_schema()
+    time.sleep(5)
     app.run(host='0.0.0.0', port=5000, use_reloader=False, debug=True)

@@ -27,7 +27,7 @@ const Sidebar = (props) => {
   }, [props.showStatistics])
 
   const getStatistics = async ()=> {
-    const response = await fetch(`${props.domain}/api/statistics`)
+    const response = await fetch(`/api/statistics`)
     const dataStat = await response.json();
     props.setStatistics(dataStat);
   }

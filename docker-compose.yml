@@ -11,5 +11,5 @@ services:
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=TRUE
     ports:
-      - 3306:3306
+      - 0.0.0.0:3305:3306
 

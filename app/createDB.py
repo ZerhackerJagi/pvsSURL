@@ -8,7 +8,8 @@ def create_db_schema():
     """creates the database schema"""
     db_connection = mysql.connector.connect(
         host = DB_HOST,
-        user = 'root',
+        port = DB_PORT,
+        user = DB_USER,
         password= DB_PASSWORD    
         )
     cursor = db_connection.cursor()

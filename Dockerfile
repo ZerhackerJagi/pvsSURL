@@ -1,7 +1,6 @@
 FROM python:3.7-alpine
-WORKDIR /code
+WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
-COPY . .
 RUN ls -la
 CMD ["python", "app/main.py"]

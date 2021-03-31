@@ -5,7 +5,8 @@ import {
     Collapsible,
     Heading,
     Layer,
-    Text
+    Text,
+    TextArea
 
  } from 'grommet';
  import { FormClose } from 'grommet-icons';
@@ -21,8 +22,8 @@ const Help = props => {
             onClick={()=>props.setShowHelp(false)}
             />
         </Box>
-        <Box margin='medium'>
-            <Heading level='2'>Anleitung</Heading>
+        <Box margin='medium' overflow={{"vertical": "scroll"}}>
+            <Heading level='2'>AnleitungA</Heading>
             <Text>Geben Sie die gewünschte <b>URL</b> in das Eingabefeld ein und drücken Sie anschließend auf <b>shorten</b>. Es wird eine zufällige kurze URL mit der Domain perver.so erzeugt.
             Möchten Sie einen eigenen Namen wählen oder die Konditionen verändern, drücken Sie bitte auf das <b>Werkzeug-Symbol</b> links vom Eingabefeld. Es öffnen sich nun weitere Optionen:<br />
             <br /><b>Custom Tag:</b> Wenn Sie den Schalter nach rechts schieben (anklicken), können Sie im neuen Eingabefeld einen eigenen URL Tag angeben. (https://perver.so/[ihr persönlicher tag])

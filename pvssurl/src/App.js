@@ -1,37 +1,44 @@
 import React, { useState } from 'react';
 import { 
-  Box, 
+  Box,
   Grommet
 } from 'grommet';
 
-import AppBar from './components/AppBar'
-import Sidebar from './components/Sidebar'
+import Outdated from './sites/outdated'
+import NotFound from './sites/notFound'
+import SafeLoad from './sites/safeLoad'
+
 import MainContent from './components/MainContent'
+import Sidebar from './components/Sidebar'
+import AppBar from './components/AppBar'
 import Help from './components/Help'
 import AppFooter from './components/AppFooter'
+
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { pvsTheme } from './theme/theme'
 
 
 
 const App = () => {
-
-  const domain = 'http://localhost:5000'
   const [showStatistics, setShowStatistics] = useState(false);
   const [statistics, setStatistics] = useState([]);
   const [showSidebar, setShowSidebar] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
-
+  const [darkMode, setDarkmode] = useState(true);
 
   return (
-    <Grommet theme={ pvsTheme } full>  
-          <Box background='dark-1' fill>
+        <Grommet theme={ pvsTheme } themeMode={darkMode ? "dark" : "light"} full>  
+          <Box background={darkMode ? "dark-1" : "light-1"} fill>
             <AppBar 
               setShowSidebar={setShowSidebar}
               showSidebar={showSidebar}
               setShowHelp={setShowHelp}
               showHelp={showHelp}
+              darkMode={darkMode}
+              setDarkmode={setDarkmode}
             />
+
             
             <Box flex direction='row' overflow={{ horizontal: 'hidden' }} gap='medium'>
               <Sidebar 
@@ -40,12 +47,17 @@ const App = () => {
                 setShowStatistics={setShowStatistics}
                 setStatistics={setStatistics}
                 statistics={statistics}
-                domain={domain}
               />
               
-              <MainContent
-                domain={domain}
-              />
+              <Router>
+                <Switch>
+                  <Route path="/" exact component={MainContent} />
+                  <Route path="/error/404" component={NotFound}/>
+                  <Route path="/:id/outdated" component={Outdated}/>
+                  <Route path="/:url/safeView" component={SafeLoad}/>
+                </Switch>
+
+              </Router>
 
             </Box>
 
@@ -53,6 +65,8 @@ const App = () => {
               setShowHelp={setShowHelp}
               showHelp={showHelp}
             />
+
+
 
             
 

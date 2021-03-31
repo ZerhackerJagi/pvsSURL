@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, url_for, send_file, redirect, make_response, jsonify
+from flask import Flask, request, render_template, url_for, send_file, redirect, make_response, jsonify, abort
 from flask_cors import CORS
 import json
 import datetime as dt
@@ -18,12 +18,15 @@ def get_home():
     """
     return render_template('index.html')
 
-@app.route('/outdated')
-def get_outdated():
+@app.route('/<short_url>/outdated')
+def get_outdated(short_url):
     """
     Page that loads if remaining references of a link is 0
     """
-    return render_template('outdated.html')
+
+    return render_template('index.html')
+
+
 
 @app.route('/<short_url>')
 def redirect_user(short_url):
@@ -44,7 +47,39 @@ def redirect_user(short_url):
             return redirect(row[0], code=302)
     cursor.close()
     connection.close()
-    return render_template('404.html')
+    abort(404)
+    # return redirect("/404", code=302)
+
+@app.route('/<short_url>/safe')
+def redirect_safe(short_url):
+    # search for short url
+    connection = api.connect_db()
+    cursor = connection.cursor(buffered=True)
+    # new_path = request.path
+    new_path= request.path[1:-(len(request.path)-5)]
+    app.logger.warning(new_path)
+    app.logger.warning(short_url)
+    query = f"SELECT reference_url FROM link WHERE short_url='{new_path}'"
+    cursor.execute(query)
+    for row in cursor:
+        app.logger.warning(row)
+        if row is not None:
+            x = api.check_limit(new_path, connection)
+            cursor.close()
+            connection.close()
+            url=api.remove_http_from_url(row[0])
+            app.logger.warning(url)
+            return redirect(f"/{url}/safeView", code=302)
+    cursor.close()
+    connection.close()
+    abort(404)
+    # return app.send_static_file("index.html")
+    # return redirect("/404", 302)
+
+@app.route("/<short_url>/safeView")
+def show_view(short_url):
+    return render_template("index.html"),200
+
 
 @app.route('/api/create', methods=["GET"])
 def use_api():
@@ -103,8 +138,27 @@ def get_statistic():
     app.logger.warning(res)
     return make_response(jsonify(res), 200)
 
+@app.route('/images/logo')
+def get_logo():
+    return send_file("static/images/PerVerSo32x32.png")
+
+@app.route('/images/404')
+def get_404_image():
+    return send_file("static/images/404.png")
+
+@app.route('/error/404')
+def error404():
+    return render_template("index.html"),404
+
+@app.errorhandler(404)
+def not_found(e):
+    return redirect("/error/404", code=302)
+    
+
+
+
 if __name__ == '__main__':
     time.sleep(10)
     createDB.create_db_schema()
     time.sleep(5)
-    app.run(host='0.0.0.0', port=5000, use_reloader=False, debug=True)
+    app.run(host='0.0.0.0', port=5000, use_reloader=False, debug=False)

@@ -10,7 +10,7 @@ import {
 const AppFooter = props => {
 
     return(
-        <Footer background="brand" justify="center" pad="medium">
+        <Footer background="brand" justify="center" pad="small">
         <Text textAlign="center" size="medium" color='lightgrey'>
           © 2021 Copyright PerVerSo
         </Text>
@@ -18,7 +18,7 @@ const AppFooter = props => {
         direction='row'
         justify='end'
         >
-          <Image src='../../PerVerSo32x32.png'/>
+          <Image src="/images/logo"/>
         </Box>
       </Footer>
     )

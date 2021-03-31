@@ -48,6 +48,10 @@ const MainContent = (props) => {
   ];
 
   useEffect(() => {
+    document.title = "pvsURL";
+  })
+
+  useEffect(() => {
     createShortUrl();
   }, [myURL]);
 
@@ -119,7 +123,7 @@ const MainContent = (props) => {
     <Box direction='row' gap='small'>
 
     <Button 
-      icon={<Configure color='lightgrey'/>}
+      icon={<Configure color='text'/>}
       color='brand'
       size='small'
       onClick={() => {setShowSettings(!showSettings);
@@ -152,7 +156,6 @@ const MainContent = (props) => {
       <Form onSubmit={getURL}>
         <Button
           label='Shorten'
-          color='brand'
           type='submit'
           fill='true'
         />
@@ -305,7 +308,6 @@ const MainContent = (props) => {
                 labelKey="label"
                 valueKey="value"
                 onChange={({ option }) => setRandomizer(option)}
-                size='small'
                 dropHeight='small'
                 plain
                 />

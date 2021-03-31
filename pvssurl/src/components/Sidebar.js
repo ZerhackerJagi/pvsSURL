@@ -121,16 +121,16 @@ const Sidebar = (props) => {
             onClick={()=>props.setShowStatistics(false)}
             />
           </Box>
-          <Box pad='full' justify='center' gap='medium' margin='medium'>
+          <Box pad='full' justify='center' gap='medium' margin='medium' overflow={{"vertical": "scroll"}}>
             {props.statistics.map(entry => (
               <Card>
                 <CardBody>
                   <Box gap="small" align="center" direction="row" pad="large" width='large'>
-                    <Box>
-                      <Text size='large' weight="bold" color='test'>
-                        {entry.short} </Text><Text size='large' weight='bold'>mit {entry.frequency} Aufrufen</Text>
-                      <Text size='medium'>Dieser Tag referenziert auf {entry.reference}</Text>
-                    </Box>
+                      <Box onClick={() => window.open(entry.reference)}>
+                        <Text size='large' weight="bold" color='test'>
+                          {entry.short} </Text><Text size='large' weight='bold'>mit {entry.frequency} Aufrufen</Text>
+                        <Text size='medium'>Dieser Tag referenziert auf {entry.reference}</Text>
+                      </Box>
                   </Box>
                 </CardBody>
               </Card>
@@ -149,7 +149,7 @@ const Sidebar = (props) => {
           onClick={()=>setShowProducts(false)}
           />
         </Box>
-        <Box pad='full' align='center' justify='center' gap='medium' margin='medium'>
+        <Box pad='full' align='center' justify='center' gap='medium' margin='medium' overflow={{"vertical": "scroll"}}> 
           <Heading level='2'>Produkte von PerVerSo</Heading>
         <Card>
           <CardBody>

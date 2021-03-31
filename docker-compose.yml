@@ -6,10 +6,19 @@ services:
       context: .
     ports:
       - 5000:5000
+    networks:
+      - backend
+    volumes:
+      - .:/app
   mariadb:
     image: mariadb:latest
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=TRUE
     ports:
       - 0.0.0.0:3305:3306
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
 

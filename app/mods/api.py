@@ -7,6 +7,7 @@ import random
 from flask import logging, url_for
 from main import app
 import re
+from settings import DOMAIN
 
 
 def connect_db():
@@ -48,7 +49,9 @@ def create_url(reference_url:str, is_private:bool, custom_tag:str, available_ref
         if not check_availability(custom_tag, cursor):
             cursor.close()
             connection.close()
-            return f"The requested short URL: {custom_tag} is not available"  
+            return f"The requested short URL: {custom_tag} is not available"
+    if len(re.findall("http[s]*://", reference_url)) == 0:
+        reference_url = f"https://{reference_url}"
     
     query = (f"INSERT INTO link(short_url, reference_url, is_custom, available_refs, date_created, is_private) values('{custom_tag}','{reference_url}','{int(is_custom)}','{available_refs}','{dt.datetime.now()}','{int(is_private)}')")
     try:
@@ -160,7 +163,7 @@ def check_limit(short_url:str, connection) -> bool:
             connection.commit()
             return True
         else:
-            query = f"UPDATE link SET `reference_url`='http://0.0.0.0/outdated' WHERE `short_url`='{short_url}'"
+            query = f"UPDATE link SET `reference_url`='{DOMAIN}/{short_url}/outdated' WHERE `short_url`='{short_url}'"
             cursor.execute(query)
             connection.commit()
             return False
@@ -181,4 +184,10 @@ def get_statistics(connection):
             "frequency": row[2]}
         l.append(j)
     return l
+
+def remove_http_from_url(url):
+    if url[0:5] == "https":
+        return url[8:]
+    else:
+        return url[7:]
 

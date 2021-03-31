@@ -16,7 +16,8 @@ export const pvsTheme = {
         brand: '#6496FA',
         test: 'red',
         text: {
-          dark: 'lightgrey',
+          dark: 'light-1',
+          light: 'dark-1'
         },
       },
       font: {
@@ -31,28 +32,30 @@ export const pvsTheme = {
     checkBox:{
       hover:{
         border:{
-          color:{dark:'brand'},
+          color:'brand'
         },
       },
       color:{
         dark: 'brand',
       },
       border:{
-        color:{dark:'brand'},
+        color: 'brand'
       },
       toggle:{
         color:{
-          light: 'brand',
+          light: 'brand'
         },
       },
     },
     card: {
       container: {
-        background: {dark:'#FFFFFF12'},
+        background: {dark:'dark-2',
+                    light: 'light-2'},
         elevation: 'none',
       },
       footer: {
-        background: '#FFFFFF06',
+        background: {dark: 'dark-3',
+        light: 'light-3'}
       },
     },
     button: {
@@ -61,9 +64,9 @@ export const pvsTheme = {
       },
       default: {
         background:{
-          color: {dark:'brand'},
+          color: 'brand',
         },
-        color:{dark:'lightgrey', light: 'lightgrey'},
+        color:{dark:'light-1', light: 'dark-1'},
       },
       
     },

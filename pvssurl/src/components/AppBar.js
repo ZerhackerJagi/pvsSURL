@@ -2,7 +2,8 @@ import React from 'react';
 import { 
 
   Box,
-  Button
+  Button,
+  CheckBox
 
 } from 'grommet';
 import { Menu } from 'grommet-icons';
@@ -27,6 +28,11 @@ const AppBar = (props) => (
       label='Help'
       onClick={() => props.setShowHelp(!props.showHelp)}
     />
+    <CheckBox 
+      toggle 
+      label="View" 
+      onClick={() => props.setDarkmode(!props.darkMode)
+    }/>
   </Box>
 );
 

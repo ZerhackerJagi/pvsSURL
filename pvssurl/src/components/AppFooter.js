@@ -11,7 +11,7 @@ const AppFooter = props => {
 
     return(
         <Footer background="brand" justify="center" pad="small">
-        <Text textAlign="center" size="medium" color='lightgrey'>
+        <Text textAlign="center" size="medium" color='text'>
           © 2021 Copyright PerVerSo
         </Text>
         <Box

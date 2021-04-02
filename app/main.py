@@ -92,7 +92,6 @@ def use_api():
     random_method = request.args.get('random_method')
     is_private = request.args.get('private')
     refs_available = request.args.get('refs_available')
-    app.logger.warning(refs_available)
     if url is None or not(type(url) == str):
         return make_response(jsonify({"message":"Param url is required as string"}), 406)
     else:
@@ -126,6 +125,7 @@ def use_api():
     elif refs_available is None:
         refs_available = -1
     link = api.create_url(url, int(is_private), custom_tag, int(refs_available), int(random_method))
+    app.logger.warning({"message": f"Your url {link} was created", "url": link})
     return make_response(jsonify({"message": f"Your url {link} was created", "url": link}), 201)
 
 @app.route('/api/statistics')

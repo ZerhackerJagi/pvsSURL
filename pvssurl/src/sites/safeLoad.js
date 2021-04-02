@@ -6,9 +6,10 @@ import {
 } from 'grommet';
 import { Link } from 'react-router-dom'
 
-const SafeLoad = () => {
+const SafeLoad = (props) => {
 
   const [pointer, setPointer] = useState('')
+  const language = props.language
 
   useEffect(() => {
     document.title = "pvsURL - Safe Opener";
@@ -26,8 +27,8 @@ const SafeLoad = () => {
     align='center'
     justify='center'
     gap='medium'>
-      <Heading>Are you sure?</Heading>
-      <Text>The short url points to {pointer}. Do you want to continue?</Text>
+      <Heading>{language ? "Bist du sicher?" : "Are you sure?"}</Heading>
+      <Text>{language ? `Die kurze URL referenziert auf ${pointer}. Möchtest du fortfahren?`:`The short url points to ${pointer}. Do you want to continue?`}</Text>
       
       <Box
         border="small"
@@ -44,7 +45,7 @@ const SafeLoad = () => {
           background='brand'
           color='text'
         >
-          Yes
+          {language ? "Ja" : "Yes"}
           </Box>
         </Box>
 
@@ -64,7 +65,7 @@ const SafeLoad = () => {
           background='brand'
           color='text'
         >
-          No
+          {language ? "Nein" : "No"}
           </Box>
         </Box>
       </Link>

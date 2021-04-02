@@ -11,9 +11,10 @@ import { Link } from 'react-router-dom'
 
 
 
-const Outdated = () => {
+const Outdated = (props) => {
 
   const [pointer, setPointer] = useState("")
+  const language = props.language
 
   useEffect(() => {
     document.title = "pvsURL - Link outdated";
@@ -28,8 +29,8 @@ const Outdated = () => {
     align='center'
     justify='center'
     gap='medium'>
-      <Heading>Short URL Outdated</Heading>
-      <Text>The requested Tag ({pointer}) was only generated for a limited number of requests. Please try another one.</Text>
+      <Heading>{language ? "Kurze URL abgelaufen" : "Short URL Outdated"}</Heading>
+      <Text>{language ? `Das angefragte Kürzel (${pointer}) wurde nur für eine bestimmte Anzahl an Aufrufen generiert. Bitte versuche ein anderes Kürzel.`:`The requested Tag (${pointer}) was only generated for a limited number of requests. Please try another one.`}</Text>
       <Link to="/">
         <Box
         border="small"
@@ -45,7 +46,7 @@ const Outdated = () => {
           background='brand'
           color='text'
         >
-          Try Again
+          {language ? "Nochmal versuchen" : "Try Again"}
           </Box>
         </Box>
       </Link>

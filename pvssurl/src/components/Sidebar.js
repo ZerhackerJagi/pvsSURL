@@ -21,6 +21,7 @@ import {
 const Sidebar = (props) => {
   const [showWissen, setShowWissen] = useState(false);
   const [showProducts, setShowProducts] = useState(false);
+  const language = props.language
 
   useEffect(() => {
     getStatistics();
@@ -42,7 +43,7 @@ const Sidebar = (props) => {
   justify='start'
   gap='medium'
   >
-    <Heading level='2'>Wissenswertes</Heading>
+    <Heading level='2'>{language ? "Wissenswertes" : "Nice to know"}</Heading>
     <Card onClick={()=>setShowWissen(!showWissen)}>
       <CardBody>
         <Box flex direction='row' width='medium'>
@@ -51,9 +52,9 @@ const Sidebar = (props) => {
           </Box>
           <Box justify='center' align="start" direction="column" pad="large" >
             <Text size='medium' weight="bold">
-              PerVerSo Historie
+              {language ? "PerVerSo Historie" : "PerVerSo History"}
             </Text>
-            <Text size='medium'>Wie alles begann</Text>
+            <Text size='medium'>{language ? "Wie alles begann" : "How it started"}</Text>
           </Box>
         </Box>
 
@@ -69,9 +70,9 @@ const Sidebar = (props) => {
           </Box>
           <Box justify='center' align="start" direction="column" pad="large" >
             <Text size='medium' weight="bold">
-              PerVerSo Produkte
+              {language ? "PerVerSo Produkte" : "PerVerSo Products"}
             </Text>
-            <Text size='medium'>Produktportfolio</Text>
+            <Text size='medium'>{language ? "Produktportfolio" : "Products"}</Text>
           </Box>
         </Box>
       </CardBody>
@@ -85,9 +86,9 @@ const Sidebar = (props) => {
           </Box>
           <Box justify='center' align="start" direction="column" pad="large" >
             <Text size='medium' weight="bold">
-              Statistiken
+              {language ? "Statistiken" : "Statistics"}
             </Text>
-            <Text size='medium'>Lass dir die TOP 10 der verkürzten Links anzeigen.</Text>
+            <Text size='medium'>{language ? "Lass dir die TOP 10 der verkürzten Links anzeigen." : "The TOP 10 shortened urls."}</Text>
           </Box>
         </Box>
 
@@ -95,7 +96,7 @@ const Sidebar = (props) => {
     </Card>
     
     <Collapsible open={showWissen}>
-      <Layer>
+      <Layer onClickOutside={() => props.setShowWissen(false)}>
         <Box>
             <Button
             icon={<FormClose color='lightgrey'/>}
@@ -103,10 +104,11 @@ const Sidebar = (props) => {
             />
           </Box>
           <Box pad='full' justify='center' gap='medium' margin='medium'>
-            <Heading level='2'>Entstehung</Heading>
+            <Heading level='2'>{language ? "Entstehung" : "How it started"}</Heading>
             <Text size='medium'>
-              PerVerSo war ursprünglich ein studentisches Softwareprojekt für eine Personalverwaltungssoftware. Im Laufe der Zeit kamen weitere Projekte hinzu, sodass sich PerVerSo nach und nach zu einer Marke etabliert hat.
-              Für die Entwicklergruppe steht dabei stets der Nutzende im Vordergrund, wobei ein gewisser Humor nicht verloren gegangen ist.
+              {language ? `PerVerSo war ursprünglich ein studentisches Softwareprojekt für eine Personalverwaltungssoftware. Im Laufe der Zeit kamen weitere Projekte hinzu, sodass sich PerVerSo nach und nach zu einer Marke etabliert hat.
+              Für die Entwicklergruppe steht dabei stets der Nutzende im Vordergrund, wobei ein gewisser Humor nicht verloren gegangen ist.` : `PerVerSo was a fun project during a study. It's the short version for the german version of employee management software
+              Over time the fun project got a brand. Fun is one of the important things for the developer team.`}
             </Text>
           </Box>
 
@@ -114,103 +116,115 @@ const Sidebar = (props) => {
     </Collapsible>
 
     <Collapsible open={props.showStatistics}>
-      <Layer>
-        <Box>
-            <Button
-            icon={<FormClose color='lightgrey'/>}
-            onClick={()=>props.setShowStatistics(false)}
-            />
+      <Layer onClickOutside={() => props.setShowStatistics(false)}>
+        <Box fill direction='column' align='start'>
+              <Button fill
+              icon={<FormClose color='lightgrey'/>}
+              onClick={()=>props.setShowStatistics(false)}
+              />
+          <Box direction='column' fill pad='large'>
+            <Box direction='horizontal' fill justify='center' align='center'>
+                <Heading level='2' margin="medium" >{language ? "Statistiken" : "Statistics"}</Heading>
+            </Box>
+            
+            <Box fill gap='medium' margin='medium' overflow={{"vertical": "scroll"}} >
+              {props.statistics.map(entry => (
+                <Card flex='false'>
+                  <CardBody>
+                    <Box gap="small" align="center" direction="row" pad="large" width='large'>
+                        <Box onClick={() => window.open(entry.reference)} >
+                          <Text size='large' weight="bold" color='test'>
+                            {entry.short} </Text><Text size='large' weight='bold'>{language ? `mit ${entry.frequency} Aufrufen` : `with ${entry.frequency} Clicks`}</Text>
+                          <Text size='medium'>{language ? `Dieser Tag referenziert auf ${entry.reference}` : `This tag references to ${entry.reference}`}</Text>
+                        </Box>
+                    </Box>
+                  </CardBody>
+                </Card>
+              ))}
+            </Box>
           </Box>
-          <Box pad='full' justify='center' gap='medium' margin='medium' overflow={{"vertical": "scroll"}}>
-            {props.statistics.map(entry => (
-              <Card>
-                <CardBody>
-                  <Box gap="small" align="center" direction="row" pad="large" width='large'>
-                      <Box onClick={() => window.open(entry.reference)}>
-                        <Text size='large' weight="bold" color='test'>
-                          {entry.short} </Text><Text size='large' weight='bold'>mit {entry.frequency} Aufrufen</Text>
-                        <Text size='medium'>Dieser Tag referenziert auf {entry.reference}</Text>
-                      </Box>
-                  </Box>
-                </CardBody>
-              </Card>
-            ))}
-          </Box>
-
+        </Box>
       </Layer>
     </Collapsible>
 
 
     <Collapsible open={showProducts}>
-      <Layer>  
-        <Box>
-          <Button
-          icon={<FormClose color='lightgrey'/>}
-          onClick={()=>setShowProducts(false)}
-          />
-        </Box>
-        <Box pad='full' align='center' justify='center' gap='medium' margin='medium' overflow={{"vertical": "scroll"}}> 
-          <Heading level='2'>Produkte von PerVerSo</Heading>
-        <Card>
-          <CardBody>
-          <Box gap="small" align="center" direction="row" pad="large" width='large'>
-            <Box>
-              <Text size='large' weight="bold">
-                PerVerSo
-              </Text>
-              <Text size='medium'>Personalverwaltungssoftware, basierend auf Java</Text>
+      <Layer onClickOutside={() => props.setShowProducts(false)}>
+        <Box direction='column' fill align='start'>  
+          <Box direction='row' fill>
+            <Button
+            icon={<FormClose color='lightgrey'/>}
+            onClick={()=>setShowProducts(false)}
+            fill
+            />
+          </Box>
+          <Box align='start' justify='center' overflow={{"vertical": "scroll"}} pad='large'> 
+            <Box direction='horizontal' fill justify='center' align='center'>
+              <Heading level='2' margin="medium" >{language ? "Produkte von PerVerSo" : "PerVerSo Products"}</Heading>
+            </Box>
+            <Box fill gap='medium' margin='medium'>
+              <Card flex='false'>
+                <CardBody>
+                <Box gap="small" align="center" direction="row" pad="large" width='large'>
+                  <Box>
+                    <Text size='large' weight="bold">
+                      PerVerSo
+                    </Text>
+                    <Text size='medium'>{ language ? "Personalverwaltungssoftware, basierend auf Java" : "Employee management software, based on Java"}</Text>
+                  </Box>
+                </Box>
+                </CardBody>
+              </Card>
+              <Card flex='false'>
+                <CardBody>
+                <Box gap="small" align="center" direction="row" pad="large" width='large'>
+                  <Box>
+                    <Text size='large' weight="bold">
+                      PerVerSo MSO
+                    </Text>
+                    <Text size='medium'>{language ? "Personalverwaltungssoftware, implementiert in Microsoft Excel" : "Employee management software, based on Microsoft Excel" }</Text>
+                  </Box>
+                </Box>
+                </CardBody>
+              </Card>
+              <Card flex='false'>
+                <CardBody>
+                <Box gap="small" align="center" direction="row" pad="large" width='large'>
+                  <Box>
+                    <Text size='large' weight="bold">
+                      PerVerSo MSO AEP
+                    </Text>
+                    <Text size='medium'>{language ? "Personalverwaltungssoftware, in Microsoft Excel zur Einsatzplanung von Auszubildenden" : "Employee management software, based on Microsoft Excel and mainly used for planning of trainees"}</Text>
+                  </Box>
+                </Box>
+                </CardBody>
+              </Card>
+              <Card flex='false'>
+                <CardBody>
+                <Box gap="small" align="center" direction="row" pad="large" width='large'>
+                  <Box>
+                    <Text size='large' weight="bold">
+                      Weatherplans
+                    </Text>
+                    <Text size='medium'>{language ? "Wettervorhersage zum Testen von APIs" : "Testing APIs results in a weather forecast"}</Text>
+                  </Box>
+                </Box>
+                </CardBody>
+              </Card>
+              <Card flex='false'>
+                <CardBody>
+                <Box gap="small" align="center" direction="row" pad="large" width='large'> 
+                  <Box>
+                    <Text size='large' weight="bold">
+                      OLE (Kooperation)
+                    </Text>
+                    <Text size='medium'>{language ? "Der Online LaTeX Editor mit kollaborativen Möglichkeiten zum Selfhosting": "The online LaTeX editor with collaborative possibilities with the chance for selfhosting"}</Text>
+                  </Box>
+                </Box>
+                </CardBody>
+              </Card>
             </Box>
           </Box>
-          </CardBody>
-        </Card>
-        <Card>
-          <CardBody>
-          <Box gap="small" align="center" direction="row" pad="large" width='large'>
-            <Box>
-              <Text size='large' weight="bold">
-                PerVerSo MSO
-              </Text>
-              <Text size='medium'>Personalverwaltungssoftware, implementiert in Microsoft Excel</Text>
-            </Box>
-          </Box>
-          </CardBody>
-        </Card>
-        <Card>
-          <CardBody>
-          <Box gap="small" align="center" direction="row" pad="large" width='large'>
-            <Box>
-              <Text size='large' weight="bold">
-                PerVerSo MSO AEP
-              </Text>
-              <Text size='medium'>Personalverwaltungssoftware, in Microsoft Excel zur Einsatzplanung von Auszubildenden</Text>
-            </Box>
-          </Box>
-          </CardBody>
-        </Card>
-        <Card>
-          <CardBody>
-          <Box gap="small" align="center" direction="row" pad="large" width='large'>
-            <Box>
-              <Text size='large' weight="bold">
-                Weatherplans
-              </Text>
-              <Text size='medium'>Wettervorhersage zum Testen von APIs</Text>
-            </Box>
-          </Box>
-          </CardBody>
-        </Card>
-        <Card>
-          <CardBody>
-          <Box gap="small" align="center" direction="row" pad="large" width='large'> 
-            <Box>
-              <Text size='large' weight="bold">
-                OLE (Kooperation)
-              </Text>
-              <Text size='medium'>Der Online LaTeX Editor mit kollaborativen Möglichkeiten zum Selfhosting</Text>
-            </Box>
-          </Box>
-          </CardBody>
-        </Card>
         </Box>
       </Layer> 
     </Collapsible>

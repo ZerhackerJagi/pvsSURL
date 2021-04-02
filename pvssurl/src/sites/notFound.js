@@ -10,11 +10,8 @@ import { Link } from 'react-router-dom'
 
 
 
-const NotFound = () => {
-  const [showStatistics, setShowStatistics] = useState(false);
-  const [statistics, setStatistics] = useState([]);
-  const [showSidebar, setShowSidebar] = useState(false);
-  const [showHelp, setShowHelp] = useState(false);
+const NotFound = (props) => {
+  const language = props.language
 
   useEffect(() => {
     document.title = "pvsURL - 404";
@@ -44,7 +41,7 @@ const NotFound = () => {
           background='brand'
           color='text'
         >
-          Try Again
+          {language ? "Nochmal versuchen" : "Try Again"}
           </Box>
         </Box>
       </Link>

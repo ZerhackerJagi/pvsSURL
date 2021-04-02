@@ -30,6 +30,7 @@ const MainContent = (props) => {
   const [CustomURL, setCustomURL] = useState('');
   const [MaxReferences, setMaxReferences] = useState(-1);
   const [Randomizer, setRandomizer] = useState(1);
+  const [randomOptions, setRandomOptions] = useState([]);
 
   const [URLInput, setURLInput] = useState('');
   const [myURL, setURL] = useState('');
@@ -38,18 +39,33 @@ const MainContent = (props) => {
   const [showResult, setShowResult] = useState(false);
   const [message, setMessage] = useState("");
 
+  const language = props.language
   const [createdUrl, setCreatedUrl] = useState(`${props.domain}`);
+  const [answer, setAnswer] = useState(<Text size='medium' color='brand'>Your URL was created</Text>);
 
-  const randomOptions = [
-    { label: 'Default', value: 1 },
-    { label: 'Uppercase', value: 2 },
-    { label: 'Lowercase', value: 3 },
-    { label: 'Numbers', value: 4 },
-  ];
+
 
   useEffect(() => {
     document.title = "pvsURL";
-  })
+    if(props.language){
+      setAnswer(<Text size='medium' color='brand'>Deine kurze URL <Anchor href={createdUrl} label={createdUrl} color='brand'/> wurde erstellt</Text>) 
+      setRandomOptions([
+        { label: 'Standard', value: 1 },
+        { label: 'Großbuchstaben', value: 2 },
+        { label: 'Kleinbuchstaben', value: 3 },
+        { label: 'Zahlen', value: 4 },
+      ])
+    }else {
+      setAnswer(<Text size='medium' color='brand'>Your URL <Anchor href={createdUrl} label={createdUrl} color='brand'/> was created</Text>)
+      setRandomOptions([
+        { label: 'Default', value: 1 },
+        { label: 'Uppercase', value: 2 },
+        { label: 'Lowercase', value: 3 },
+        { label: 'Numbers', value: 4 },
+      ])
+    }
+
+  },[language])
 
   useEffect(() => {
     createShortUrl();
@@ -84,9 +100,15 @@ const MainContent = (props) => {
       setMessage(dataUrl.message);
       if(dataUrl.hasOwnProperty('url')){
         setCreatedUrl(dataUrl.url);
+        if(language){
+          setAnswer(<Text size='medium' color='brand'>Deine kurze URL <Anchor href={dataUrl.url} label={dataUrl.url} color='brand'/> wurde erstellt</Text>) 
+        }else {
+          setAnswer(<Text size='medium' color='brand'>Your URL <Anchor href={dataUrl.url} label={dataUrl.url} color='brand'/> was created</Text>)
+        }
       }
     } catch(error){
       setMessage("Error connecting to Backend")
+      setAnswer(message)
     }
     
     }
@@ -123,7 +145,7 @@ const MainContent = (props) => {
     <Box direction='row' gap='small'>
 
     <Button 
-      icon={<Configure color='text'/>}
+      icon={<Configure color='dark-1'/>}
       color='brand'
       size='small'
       onClick={() => {setShowSettings(!showSettings);
@@ -148,14 +170,15 @@ const MainContent = (props) => {
       <Code color='brand'/>
       <TextInput 
       plain
-      placeholder='Enter your URL...'
+      placeholder={language ? 'Füge deinen Link ein...' : 'Enter your URL...'}
       onChange={updateURL}
       /> 
     </Box>
 
       <Form onSubmit={getURL}>
         <Button
-          label='Shorten'
+          color='brand'
+          label={language ? 'Verkürzen':'Shorten'}
           type='submit'
           fill='true'
         />
@@ -171,7 +194,7 @@ const MainContent = (props) => {
         {(() => {
           if (createdUrl.length>0) {
             return (
-              <Text size='medium' color='brand'>Your URL <Anchor href={createdUrl} label={createdUrl} color='brand'/> was created</Text>
+              answer
             )
           } else {
             return (
@@ -199,7 +222,7 @@ const MainContent = (props) => {
         >
           <CheckBox
             toggle
-            label='Custom tag'
+            label={language ? 'Individueller Tag' : 'Custom tag'}
             onClick={() => setShowCustomURL(!showCustomURL)}
           />
           <Collapsible direction='horizontal' open={showCustomURL}>
@@ -219,7 +242,7 @@ const MainContent = (props) => {
                 <Tag color='brand'/>
                 <TextInput 
                 plain
-                placeholder='Enter custom tag...'
+                placeholder={language ? 'Gib deinen individuellen Tag ein...' : 'Enter custom tag...'}
                 onChange={updateCustomURL}
                 /> 
               </Box>
@@ -234,7 +257,7 @@ const MainContent = (props) => {
         >
           <CheckBox
             toggle
-            label='Set max. references'
+            label={language ? 'Limit an Aufrufen setzen':'Set max. references'}
             onClick={() => setShowMaxReferences(!showMaxReferences)}
           />
           <Collapsible direction='horizontal' open={showMaxReferences}>
@@ -254,7 +277,7 @@ const MainContent = (props) => {
                 <Edit color='brand'/>
                 <TextInput 
                 plain
-                placeholder='Enter max. References...'
+                placeholder={language ? 'Gib die Anzahl der maximalen Aufrufe ein...' : 'Enter max. References...'}
                 onChange={updateMaxRef}
                 /> 
               </Box>
@@ -269,7 +292,7 @@ const MainContent = (props) => {
         >
           <CheckBox
             toggle
-            label='Is private'
+            label={language ? 'Privat setzen' : 'Is private'}
             onClick={() => setIsPrivate(!isPrivate)}
           />
           <Collapsible direction='horizontal' open={isPrivate}>
@@ -284,7 +307,7 @@ const MainContent = (props) => {
         >
           <CheckBox
             toggle
-            label='Special randomizer'
+            label={language ? 'Speziellen Zufallsgenerator' : 'Special randomizer'}
             onClick={() => setShowRandomizer(!showRandomizer)}
           />
           <Collapsible direction='horizontal' open={showRandomizer}>
@@ -303,7 +326,7 @@ const MainContent = (props) => {
               >
                 <Tag color='brand'/>
                 <Select 
-                placeholder='Select randomizer...'
+                placeholder={language ? 'Auswählen Zufallsgenerator...' : 'Select randomizer...'}
                 options={randomOptions}
                 labelKey="label"
                 valueKey="value"

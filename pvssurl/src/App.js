@@ -26,6 +26,7 @@ const App = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [darkMode, setDarkmode] = useState(true);
+  const [language, setLanguage] = useState(true);
 
   return (
         <Grommet theme={ pvsTheme } themeMode={darkMode ? "dark" : "light"} full>  
@@ -37,6 +38,8 @@ const App = () => {
               showHelp={showHelp}
               darkMode={darkMode}
               setDarkmode={setDarkmode}
+              language={language}
+              setLanguage={setLanguage}
             />
 
             
@@ -47,14 +50,15 @@ const App = () => {
                 setShowStatistics={setShowStatistics}
                 setStatistics={setStatistics}
                 statistics={statistics}
+                language={language}
               />
               
               <Router>
                 <Switch>
-                  <Route path="/" exact component={MainContent} />
-                  <Route path="/error/404" component={NotFound}/>
-                  <Route path="/:id/outdated" component={Outdated}/>
-                  <Route path="/:url/safeView" component={SafeLoad}/>
+                  <Route path="/" exact component={() => <MainContent language={language} />} />
+                  <Route path="/error/404" component={() => <NotFound language={language} />}/>
+                  <Route path="/:id/outdated" component={() => <Outdated language={language} />}/>
+                  <Route path="/:url/safeView" component={() => <SafeLoad language={language} />}/>
                 </Switch>
 
               </Router>

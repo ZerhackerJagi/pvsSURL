@@ -4,14 +4,6 @@ export const pvsTheme = {
         "background": "#444444",
         "shadowSize": "medium"
       },
-      "elevation": {
-        "dark": {
-          "medium": "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)"
-        },
-        "light": {
-          "medium": "0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23)"
-        }
-      },
       "colors": {
         "brand": "#6496FA",
         "test": "red",
@@ -24,6 +16,17 @@ export const pvsTheme = {
         "family": "Arial",
         "size": "20px",
         "height": "20px"
+      },
+      "focus":{
+        "border":{
+          "color": "text"
+        },
+        "outline": {
+          "color": "None"
+        }
+      },
+      "hover":{
+        "background": {"color": "text", "opacity": "medium"}
       },
       "input": {
         "weight": 400
@@ -58,6 +61,13 @@ export const pvsTheme = {
         "light": "light-3"}
       }
     },
+    "select":{
+      "options":{
+        "container":{
+          "background": "brand"
+        }
+      }
+    },
     "button": {
       "border":{
         "radius": "12px"
@@ -67,11 +77,11 @@ export const pvsTheme = {
           "color": {
             "dark": "brand",
             "light": "brand"
-        },
-        "color": {
-          "dark":"light-1", 
-          "light": "dark-1"
         }
+      },
+      "color": {
+        "dark":"light-1", 
+        "light": "dark-1"
       }
     }
   }

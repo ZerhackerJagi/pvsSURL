@@ -2,22 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { 
   Anchor,
   Box, 
-  Button,
-  CheckBox, 
-  Collapsible,
   Heading, 
-  Select,
-  Text,
-  TextInput,
-  Form
+  Text
 } from 'grommet';
-import { 
-  Code, 
-  Configure,
-  Edit,
-  Secure,
-  Tag 
-} from 'grommet-icons';
+import MainContentDesktop from './MainContentDesktop'
+import MainContentMobile from './MainContentMobile'
 
 
 const MainContent = (props) => {
@@ -133,214 +122,74 @@ const MainContent = (props) => {
     setShowResult(true);
   };
 
+  const size=props.size;
+
   return(
   <Box
   flex
   align='center'
   justify='center'
   gap='medium'
+  background={props.darkMode ? "dark" : "light"}
   >
     
     <Heading level='1'>PerVerSo Shorter URLs</Heading>
     <Box direction='row' gap='small'>
 
-    <Button 
-      icon={<Configure color='dark-1'/>}
-      color='brand'
-      size='small'
-      onClick={() => {setShowSettings(!showSettings);
-      setShowCustomURL(false);
-      setIsPrivate(false);
-      setShowMaxReferences(false);
-      setShowRandomizer(false);
-      }}
-    />
-    
-    <Box
-      width="large"
-      direction="row"
-      align="center"
-      pad={{ horizontal: 'small', vertical: 'xsmall' }}
-      round="small"
-      border={{
-        side: 'all',
-        color: 'brand',
-      }}
-    >
-      <Code color='brand'/>
-      <TextInput 
-      plain
-      placeholder={language ? 'Füge deinen Link ein...' : 'Enter your URL...'}
-      onChange={updateURL}
-      /> 
-    </Box>
+     {props.size!=="small" ? (
+    <MainContentDesktop
+      message={message}
+      createdUrl={createdUrl}
+      darkMode={props.darkMode}
+      setRandomizer={setRandomizer}
+      randomOptions={randomOptions}
+      language={language}
+      showRandomizer={showRandomizer}
+      setShowRandomizer={setShowRandomizer}
+      isPrivate={isPrivate}
+      setIsPrivate={setIsPrivate}
+      updateMaxRef={updateMaxRef}
+      showMaxReferences={showMaxReferences}
+      setShowMaxReferences={setShowMaxReferences}
+      updateCustomURL={updateCustomURL}
+      showCustomURL={showCustomURL}
+      setShowCustomURL={setShowCustomURL}
+      showSettings={showSettings}
+      showResult={showResult}
+      getURL={getURL}
+      updateURL={updateURL}
+      setShowSettings={setShowSettings}
+      answer={answer}
 
-      <Form onSubmit={getURL}>
-        <Button
-          color='brand'
-          label={language ? 'Verkürzen':'Shorten'}
-          type='submit'
-          fill='true'
-        />
-      </Form>
       
+    /> ):( 
+      <MainContentMobile
+        message={message}
+        createdUrl={createdUrl}
+        darkMode={props.darkMode}
+        setRandomizer={setRandomizer}
+        randomOptions={randomOptions}
+        language={language}
+        showRandomizer={showRandomizer}
+        setShowRandomizer={setShowRandomizer}
+        isPrivate={isPrivate}
+        setIsPrivate={setIsPrivate}
+        updateMaxRef={updateMaxRef}
+        showMaxReferences={showMaxReferences}
+        setShowMaxReferences={setShowMaxReferences}
+        updateCustomURL={updateCustomURL}
+        showCustomURL={showCustomURL}
+        setShowCustomURL={setShowCustomURL}
+        showSettings={showSettings}
+        showResult={showResult}
+        getURL={getURL}
+        updateURL={updateURL}
+        setShowSettings={setShowSettings}
+        answer={answer}
+      />
+    )}
+
     </Box>
-
-    <Collapsible direction='vertical' open={showResult}>
-      <Box
-      width='large'
-      >
-        
-        {(() => {
-          if (createdUrl.length>0) {
-            return (
-              answer
-            )
-          } else {
-            return (
-              <Text size='medium' color='test'>{message}</Text>
-            )
-          } 
-          })()}
-        
-      </Box>
-    </Collapsible>
-
-    <Collapsible direction='vertical' open={showSettings}>
-      <Box
-      flex
-      direction='column'
-      align='center'
-      justify='center'
-      gap='medium'
-      >
-        <Box
-          width="large"
-          direction="row"
-          align="center"
-          gap='medium'
-        >
-          <CheckBox
-            toggle
-            label={language ? 'Individueller Tag' : 'Custom tag'}
-            onClick={() => setShowCustomURL(!showCustomURL)}
-          />
-          <Collapsible direction='horizontal' open={showCustomURL}>
-            <Box width='large' direction='row' justify='end'>
-              <Box
-                width="medium"
-                direction="row"
-                align="center"
-                justify='end'
-                pad={{ horizontal: 'small', vertical: 'xsmall' }}
-                round="small"
-                border={{
-                  side: 'all',
-                  color: 'brand',
-                }}
-              >
-                <Tag color='brand'/>
-                <TextInput 
-                plain
-                placeholder={language ? 'Gib deinen individuellen Tag ein...' : 'Enter custom tag...'}
-                onChange={updateCustomURL}
-                /> 
-              </Box>
-            </Box>
-          </Collapsible>
-        </Box>
-        <Box
-          width="large"
-          direction="row"
-          align="center"
-          gap='medium'
-        >
-          <CheckBox
-            toggle
-            label={language ? 'Limit an Aufrufen setzen':'Set max. references'}
-            onClick={() => setShowMaxReferences(!showMaxReferences)}
-          />
-          <Collapsible direction='horizontal' open={showMaxReferences}>
-            <Box width='large' direction='row' justify='end'>
-              <Box
-                width="medium"
-                direction="row"
-                align="center"
-                justify='end'
-                pad={{ horizontal: 'small', vertical: 'xsmall' }}
-                round="small"
-                border={{
-                  side: 'all',
-                  color: 'brand',
-                }}
-              >
-                <Edit color='brand'/>
-                <TextInput 
-                plain
-                placeholder={language ? 'Gib die Anzahl der maximalen Aufrufe ein...' : 'Enter max. References...'}
-                onChange={updateMaxRef}
-                /> 
-              </Box>
-            </Box>
-          </Collapsible>
-        </Box>
-        <Box
-          width="large"
-          direction="row"
-          align="start"
-          gap='small'
-        >
-          <CheckBox
-            toggle
-            label={language ? 'Privat setzen' : 'Is private'}
-            onClick={() => setIsPrivate(!isPrivate)}
-          />
-          <Collapsible direction='horizontal' open={isPrivate}>
-            <Secure color='brand'/>
-          </Collapsible>
-        </Box>
-        <Box
-          width="large"
-          direction="row"
-          align="center"
-          gap='medium'
-        >
-          <CheckBox
-            toggle
-            label={language ? 'Speziellen Zufallsgenerator' : 'Special randomizer'}
-            onClick={() => setShowRandomizer(!showRandomizer)}
-          />
-          <Collapsible direction='horizontal' open={showRandomizer}>
-            <Box width='large' direction='row' justify='end'>
-              <Box
-                width="medium"
-                direction="row"
-                align="center"
-                justify='start'
-                pad={{ horizontal: 'small', vertical: 'xsmall' }}
-                round="small"
-                border={{
-                  side: 'all',
-                  color: 'brand',
-                }}
-              >
-                <Tag color='brand'/>
-                <Select 
-                placeholder={language ? 'Auswählen Zufallsgenerator...' : 'Select randomizer...'}
-                options={randomOptions}
-                labelKey="label"
-                valueKey="value"
-                onChange={({ option }) => setRandomizer(option)}
-                dropHeight='small'
-                plain
-                />
-              </Box>
-            </Box>
-          </Collapsible>
-        </Box>
-      
-      </Box>
-    </Collapsible>
 
   </Box>
   );

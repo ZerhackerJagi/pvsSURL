@@ -16,7 +16,6 @@ const AppBar = (props) => (
       background='brand'
       color='text'
       pad={{ left: 'medium', right: 'small', vertical: 'small' }}
-      elevation='medium'
       style={{ zIndex: '1' }}
       {...props}
   >
@@ -31,7 +30,7 @@ const AppBar = (props) => (
     >
       <Button 
         color='brand'
-        label='Help'
+        label={props.language ? 'Anleitung' : 'Help'}
         onClick={() => props.setShowHelp(!props.showHelp)}
       />
       <Button

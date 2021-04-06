@@ -138,9 +138,15 @@ def get_statistic():
     app.logger.warning(res)
     return make_response(jsonify(res), 200)
 
-@app.route('/images/logo')
+@app.route('/images/logo/light')
 def get_logo():
     return send_file("static/images/PerVerSo32x32.png")
+
+
+@app.route('/images/logo/dark')
+def get_logo_dark():
+    return send_file("static/images/PerVerSo32x32_dark.png")
+
 
 @app.route('/images/404')
 def get_404_image():

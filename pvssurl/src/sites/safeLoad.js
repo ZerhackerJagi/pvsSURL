@@ -13,9 +13,9 @@ const SafeLoad = (props) => {
 
   useEffect(() => {
     document.title = "pvsURL - Safe Opener";
-
-    const pathname = window.location.pathname
-    setPointer(`https://${pathname.substr(1,pathname.length-9)}`)
+    const pathname = window.location.pathname + window.location.search
+    console.log(pathname)
+    setPointer(`${pathname.substr(10,pathname.length)}`)
   }, []);
 
 

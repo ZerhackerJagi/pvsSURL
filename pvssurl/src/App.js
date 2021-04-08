@@ -87,7 +87,7 @@ const App = () => {
                     <Route path="/" exact component={() => <MainContent language={language} darkMode={darkMode} size={size}/>} />
                     <Route path="/error/404" component={() => <NotFound language={language} />}/>
                     <Route path="/:id/outdated" component={() => <Outdated language={language} />}/>
-                    <Route path="/:url/safeView" component={() => <SafeLoad language={language} />}/>
+                    <Route path="/safeView/:url" component={() => <SafeLoad language={language}/>}/>
                   </Switch>
 
                 </Router>

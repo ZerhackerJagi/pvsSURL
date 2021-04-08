@@ -110,6 +110,9 @@ def check_availability(short_url, cursor) -> bool:
     checks if string in database
     returns: true if not in db, false if in db
     """
+    if short_url=="safeView":
+        return False
+
     query = f"SELECT count(`short_url`) FROM link WHERE `short_url`='{short_url}'"
     cursor.execute(query)
     for row in cursor:
@@ -157,8 +160,9 @@ def check_limit(short_url:str, connection) -> bool:
         if row[1] == -1:
             return True
         elif row[1] > 1:
-            app.logger.warning(row[0])
-            query = f"UPDATE link SET `available_refs`='{(int(row[0])-1)}' WHERE `short_url`='{short_url}'"
+            app.logger.warning(f"row is going to get an update from {row[1]} to {str((int(row[1])-1))}")
+            app.logger.warning(row[1])
+            query = f"UPDATE link SET `available_refs`='{(int(row[1])-1)}' WHERE `short_url`='{short_url}'"
             cursor.execute(query)
             connection.commit()
             return True
